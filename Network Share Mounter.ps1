@@ -13,7 +13,6 @@
 #	- Introducing groupshares.json								#
 #   - Anpassung an PowerShell Pro Tools Compiler				#
 #	- smaller improvements and clean-up 						#
-#	- include RZ Home Drive in public domain					#
 #	- changed authentication username notation					#
 #	- updated GUI												#
 #	- added cmdkey for credential manager storage				#
@@ -121,7 +120,7 @@ function global:external_authentication
 			$Message = [System.Windows.Forms.MessageBox]::Show("Only usernames are allowed. Do not enter the corresponding domain $([System.Environment]::NewLine)$domain $([System.Environment]::NewLine)via @ or \ since it will be automatically populated.","$tool",0,[System.Windows.Forms.MessageBoxIcon]::Exclamation)
 		}  
 				
-				# Only start verification if no domain was provided by the user
+		# Only start verification if no domain was provided by the user
 		If (-not($Message))
 		{
 			# Verify the credentials prompt wasn't bypassed.
@@ -607,7 +606,7 @@ function global:Workstation_GUI
 		{
 			$objGroupShareButton.Enabled = $false
 		}
-			$objForm.Refresh()
+		$objForm.Refresh()
 	})
 
     #This creates the persistance header label
