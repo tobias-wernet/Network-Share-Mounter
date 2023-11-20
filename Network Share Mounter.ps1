@@ -472,7 +472,7 @@ function global:About
 			
 			#This creates a label for Contact E-Mail
 			$aboutformLink = New-Object System.Windows.Forms.LinkLabel
-			$aboutformLink.Location = New-Object System.Drawing.Size(10,360) 
+			$aboutformLink.Location = New-Object System.Drawing.Size(10,340) 
 			$aboutformLink.Size = New-Object System.Drawing.Size(250,40)
 			$aboutformLink.Autosize = $true			
 			$aboutformLink.Font = New-Object System.Drawing.Font("Arial",8)
@@ -483,7 +483,7 @@ function global:About
 	
 			#This creates the OK button and sets the Close event
 			$OKButtona = New-Object System.Windows.Forms.Button
-			$OKButtona.Location = New-Object System.Drawing.Size(10,415)
+			$OKButtona.Location = New-Object System.Drawing.Size(10,465)
 			$OKButtona.Size = New-Object System.Drawing.Size(75,30)
 			$OKButtona.Text = "OK"
 			$OKButtona.Autosize = $true
@@ -492,7 +492,7 @@ function global:About
 			
             #This creates the picture box for the i3d:bio logo
 			$objpictureBoxi3d = New-Object Windows.Forms.PictureBox
-			$objpictureBoxi3d.Location = New-Object System.Drawing.Size(360,320)
+			$objpictureBoxi3d.Location = New-Object System.Drawing.Size(360,370)
 			$objpictureBoxi3d.Size = New-Object System.Drawing.Size(109,80)
 			$objpictureBoxi3d.Autosize = $false
 			$objpictureBoxi3d.Image = $imgi3d
@@ -503,7 +503,7 @@ function global:About
 
 			#This creates the picture box for the UFR logo
 			$objpictureBoxUFRa = New-Object Windows.Forms.PictureBox
-			$objpictureBoxUFRa.Location = New-Object System.Drawing.Size(150,410)
+			$objpictureBoxUFRa.Location = New-Object System.Drawing.Size(150,460)
 			$objpictureBoxUFRa.Size = New-Object System.Drawing.Size(240,50)
 			$objpictureBoxUFRa.Autosize = $true
 			$objpictureBoxUFRa.Image = $imgUFR
@@ -511,6 +511,14 @@ function global:About
 				Start-Process 'https://miap.eu/miap-unit/life-imaging-center/'
 			})
 			$aboutform.controls.add($objpictureBoxUFRa)
+
+			#This creates a label for the DFG funding text
+			$aboutformLabelFunding = New-Object System.Windows.Forms.Label
+			$aboutformLabelFunding.Location = New-Object System.Drawing.Size(10,370) 
+			$aboutformLabelFunding.Size = New-Object System.Drawing.Size(350,120) 
+			$aboutformLabelFunding.Font = New-Object System.Drawing.Font("Arial",7)
+			$aboutformLabelFunding.Text = "Gefördert durch die Deutsche Forschungsgemeinschaft,DFG, `r`nim Rahmen des Projekts Information Infrastructure`r`nfor BioImage Data (I3D:bio) - 462231789"
+			$aboutform.Controls.Add($aboutformLabelFunding) 
 
 			SetDoubleBuffered $aboutform
 			[void] $aboutform.ShowDialog()
