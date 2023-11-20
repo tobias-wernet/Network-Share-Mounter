@@ -3,8 +3,8 @@
 # Life Imaging Center, Albert-Ludwigs-Universität Freiburg		#
 #																#
 # Tobias Wernet													#
-# 15.11.2023													#
-# v 1.6.2.1										 				#		
+# 20.11.2023													#
+# v 1.6.3										 				#		
 #																#
 # Changelog:													#
 #	- Rename													#
@@ -48,8 +48,8 @@ Add-Type -AssemblyName System.Windows.Forms
 [void] [System.Windows.Forms.Application]::EnableVisualStyles() 
 
 # Various Variables
-$version = "1.6.2.1"
-$lastdate = "15.11.2023"
+$version = "1.6.3"
+$lastdate = "20.11.2023"
 $tool = "Network Share Mounter"
 $user = 'xUIDx'
 
@@ -452,18 +452,28 @@ function global:About
 			$aboutformLabel.Text = "This software is provided `"as is`" without any warranty. `r`nThere is no official support. `r`nHowever, we are happy to receive feedback and will consider `r`nimplementing features or bug fixes on request."
 			$aboutform.Controls.Add($aboutformLabel) 
 	
+			#This creates a label for the License text
+			$aboutformLabelL = New-Object System.Windows.Forms.LinkLabel
+			$aboutformLabelL.Location = New-Object System.Drawing.Size(10,190) 
+			$aboutformLabelL.Size = New-Object System.Drawing.Size(450,20) 
+			$aboutformLabelL.Font = New-Object System.Drawing.Font("Arial",8)
+			$aboutformLabelL.Text = "Copyright © 2023 - GNU General Public License 3"
+			$aboutformLabelL.LinkColor ="blue"
+			$aboutformLabelL.add_Click({[system.Diagnostics.Process]::start("https://www.gnu.org/licenses/gpl-3.0.html")})
+			$aboutform.Controls.Add($aboutformLabelL) 
+
 			#This creates a label for the Copyright text
 			$aboutformLabel = New-Object System.Windows.Forms.Label
-			$aboutformLabel.Location = New-Object System.Drawing.Size(10,200) 
-			$aboutformLabel.Size = New-Object System.Drawing.Size(450,150) 
+			$aboutformLabel.Location = New-Object System.Drawing.Size(10,220) 
+			$aboutformLabel.Size = New-Object System.Drawing.Size(250,120) 
 			$aboutformLabel.Font = New-Object System.Drawing.Font("Arial",8)
-			$aboutformLabel.Text = "Copyright © 2023 - Alle Rechte vorbehalten. `r`n`r`nTobias Wernet `r`nUniversity of Freiburg `r`nSignaling Campus Freiburg `r`nLife Imaging Center `r`nHabsburgerstr. 49 `r`n79104 Freiburg im Breisgau"
+			$aboutformLabel.Text = "Tobias Wernet `r`nUniversity of Freiburg `r`nSignaling Campus Freiburg `r`nLife Imaging Center `r`nHabsburgerstr. 49 `r`n79104 Freiburg im Breisgau"
 			$aboutform.Controls.Add($aboutformLabel) 
 			
 			#This creates a label for Contact E-Mail
 			$aboutformLink = New-Object System.Windows.Forms.LinkLabel
 			$aboutformLink.Location = New-Object System.Drawing.Size(10,360) 
-			$aboutformLink.Size = New-Object System.Drawing.Size(300,40)
+			$aboutformLink.Size = New-Object System.Drawing.Size(250,40)
 			$aboutformLink.Autosize = $true			
 			$aboutformLink.Font = New-Object System.Drawing.Font("Arial",8)
 			$aboutformLink.Text = "tobias.wernet@biologie.uni-freiburg.de"
@@ -480,14 +490,28 @@ function global:About
 			$OKButtona.Add_Click({handler_click_drive_OK; $aboutform.Close()})
 			$aboutform.Controls.Add($OKButtona)
 			
-            #This creates the picture box for the UFR logo
+            #This creates the picture box for the i3d:bio logo
+			$objpictureBoxi3d = New-Object Windows.Forms.PictureBox
+			$objpictureBoxi3d.Location = New-Object System.Drawing.Size(360,320)
+			$objpictureBoxi3d.Size = New-Object System.Drawing.Size(109,80)
+			$objpictureBoxi3d.Autosize = $false
+			$objpictureBoxi3d.Image = $imgi3d
+			$objpictureBoxi3d.add_Click({
+				Start-Process 'https://gerbi-gmb.de/i3dbio/'
+			})
+			$aboutform.controls.add($objpictureBoxi3d)
+
+			#This creates the picture box for the UFR logo
 			$objpictureBoxUFRa = New-Object Windows.Forms.PictureBox
 			$objpictureBoxUFRa.Location = New-Object System.Drawing.Size(150,410)
 			$objpictureBoxUFRa.Size = New-Object System.Drawing.Size(240,50)
 			$objpictureBoxUFRa.Autosize = $true
 			$objpictureBoxUFRa.Image = $imgUFR
+			$objpictureBoxUFRa.add_Click({
+				Start-Process 'https://miap.eu/miap-unit/life-imaging-center/'
+			})
 			$aboutform.controls.add($objpictureBoxUFRa)
-			
+
 			SetDoubleBuffered $aboutform
 			[void] $aboutform.ShowDialog()
 }
@@ -523,6 +547,16 @@ function global:Workstation_GUI
 	# initialize a Memory stream holding the logo
 	$logostream = [System.IO.MemoryStream]::new($logoBytes, 0, $logoBytes.Length)
 	$imgUFR = [System.Drawing.Icon]::FromHandle(([System.Drawing.Bitmap]::new($logostream).GetHIcon()))
+
+
+	# This creates and bas64 encodes the i3d:bio Logo
+	$logoBase64 = 'iVBORw0KGgoAAAANSUhEUgAAAG0AAABQCAYAAAATHPslAAAACXBIWXMAAAsTAAALEwEAmpwYAAAKT2lDQ1BQaG90b3Nob3AgSUNDIHByb2ZpbGUAAHjanVNnVFPpFj333vRCS4iAlEtvUhUIIFJCi4AUkSYqIQkQSoghodkVUcERRUUEG8igiAOOjoCMFVEsDIoK2AfkIaKOg6OIisr74Xuja9a89+bN/rXXPues852zzwfACAyWSDNRNYAMqUIeEeCDx8TG4eQuQIEKJHAAEAizZCFz/SMBAPh+PDwrIsAHvgABeNMLCADATZvAMByH/w/qQplcAYCEAcB0kThLCIAUAEB6jkKmAEBGAYCdmCZTAKAEAGDLY2LjAFAtAGAnf+bTAICd+Jl7AQBblCEVAaCRACATZYhEAGg7AKzPVopFAFgwABRmS8Q5ANgtADBJV2ZIALC3AMDOEAuyAAgMADBRiIUpAAR7AGDIIyN4AISZABRG8lc88SuuEOcqAAB4mbI8uSQ5RYFbCC1xB1dXLh4ozkkXKxQ2YQJhmkAuwnmZGTKBNA/g88wAAKCRFRHgg/P9eM4Ors7ONo62Dl8t6r8G/yJiYuP+5c+rcEAAAOF0ftH+LC+zGoA7BoBt/qIl7gRoXgugdfeLZrIPQLUAoOnaV/Nw+H48PEWhkLnZ2eXk5NhKxEJbYcpXff5nwl/AV/1s+X48/Pf14L7iJIEyXYFHBPjgwsz0TKUcz5IJhGLc5o9H/LcL//wd0yLESWK5WCoU41EScY5EmozzMqUiiUKSKcUl0v9k4t8s+wM+3zUAsGo+AXuRLahdYwP2SycQWHTA4vcAAPK7b8HUKAgDgGiD4c93/+8//UegJQCAZkmScQAAXkQkLlTKsz/HCAAARKCBKrBBG/TBGCzABhzBBdzBC/xgNoRCJMTCQhBCCmSAHHJgKayCQiiGzbAdKmAv1EAdNMBRaIaTcA4uwlW4Dj1wD/phCJ7BKLyBCQRByAgTYSHaiAFiilgjjggXmYX4IcFIBBKLJCDJiBRRIkuRNUgxUopUIFVIHfI9cgI5h1xGupE7yAAygvyGvEcxlIGyUT3UDLVDuag3GoRGogvQZHQxmo8WoJvQcrQaPYw2oefQq2gP2o8+Q8cwwOgYBzPEbDAuxsNCsTgsCZNjy7EirAyrxhqwVqwDu4n1Y8+xdwQSgUXACTYEd0IgYR5BSFhMWE7YSKggHCQ0EdoJNwkDhFHCJyKTqEu0JroR+cQYYjIxh1hILCPWEo8TLxB7iEPENyQSiUMyJ7mQAkmxpFTSEtJG0m5SI+ksqZs0SBojk8naZGuyBzmULCAryIXkneTD5DPkG+Qh8lsKnWJAcaT4U+IoUspqShnlEOU05QZlmDJBVaOaUt2ooVQRNY9aQq2htlKvUYeoEzR1mjnNgxZJS6WtopXTGmgXaPdpr+h0uhHdlR5Ol9BX0svpR+iX6AP0dwwNhhWDx4hnKBmbGAcYZxl3GK+YTKYZ04sZx1QwNzHrmOeZD5lvVVgqtip8FZHKCpVKlSaVGyovVKmqpqreqgtV81XLVI+pXlN9rkZVM1PjqQnUlqtVqp1Q61MbU2epO6iHqmeob1Q/pH5Z/YkGWcNMw09DpFGgsV/jvMYgC2MZs3gsIWsNq4Z1gTXEJrHN2Xx2KruY/R27iz2qqaE5QzNKM1ezUvOUZj8H45hx+Jx0TgnnKKeX836K3hTvKeIpG6Y0TLkxZVxrqpaXllirSKtRq0frvTau7aedpr1Fu1n7gQ5Bx0onXCdHZ4/OBZ3nU9lT3acKpxZNPTr1ri6qa6UbobtEd79up+6Ynr5egJ5Mb6feeb3n+hx9L/1U/W36p/VHDFgGswwkBtsMzhg8xTVxbzwdL8fb8VFDXcNAQ6VhlWGX4YSRudE8o9VGjUYPjGnGXOMk423GbcajJgYmISZLTepN7ppSTbmmKaY7TDtMx83MzaLN1pk1mz0x1zLnm+eb15vft2BaeFostqi2uGVJsuRaplnutrxuhVo5WaVYVVpds0atna0l1rutu6cRp7lOk06rntZnw7Dxtsm2qbcZsOXYBtuutm22fWFnYhdnt8Wuw+6TvZN9un2N/T0HDYfZDqsdWh1+c7RyFDpWOt6azpzuP33F9JbpL2dYzxDP2DPjthPLKcRpnVOb00dnF2e5c4PziIuJS4LLLpc+Lpsbxt3IveRKdPVxXeF60vWdm7Obwu2o26/uNu5p7ofcn8w0nymeWTNz0MPIQ+BR5dE/C5+VMGvfrH5PQ0+BZ7XnIy9jL5FXrdewt6V3qvdh7xc+9j5yn+M+4zw33jLeWV/MN8C3yLfLT8Nvnl+F30N/I/9k/3r/0QCngCUBZwOJgUGBWwL7+Hp8Ib+OPzrbZfay2e1BjKC5QRVBj4KtguXBrSFoyOyQrSH355jOkc5pDoVQfujW0Adh5mGLw34MJ4WHhVeGP45wiFga0TGXNXfR3ENz30T6RJZE3ptnMU85ry1KNSo+qi5qPNo3ujS6P8YuZlnM1VidWElsSxw5LiquNm5svt/87fOH4p3iC+N7F5gvyF1weaHOwvSFpxapLhIsOpZATIhOOJTwQRAqqBaMJfITdyWOCnnCHcJnIi/RNtGI2ENcKh5O8kgqTXqS7JG8NXkkxTOlLOW5hCepkLxMDUzdmzqeFpp2IG0yPTq9MYOSkZBxQqohTZO2Z+pn5mZ2y6xlhbL+xW6Lty8elQfJa7OQrAVZLQq2QqboVFoo1yoHsmdlV2a/zYnKOZarnivN7cyzytuQN5zvn//tEsIS4ZK2pYZLVy0dWOa9rGo5sjxxedsK4xUFK4ZWBqw8uIq2Km3VT6vtV5eufr0mek1rgV7ByoLBtQFr6wtVCuWFfevc1+1dT1gvWd+1YfqGnRs+FYmKrhTbF5cVf9go3HjlG4dvyr+Z3JS0qavEuWTPZtJm6ebeLZ5bDpaql+aXDm4N2dq0Dd9WtO319kXbL5fNKNu7g7ZDuaO/PLi8ZafJzs07P1SkVPRU+lQ27tLdtWHX+G7R7ht7vPY07NXbW7z3/T7JvttVAVVN1WbVZftJ+7P3P66Jqun4lvttXa1ObXHtxwPSA/0HIw6217nU1R3SPVRSj9Yr60cOxx++/p3vdy0NNg1VjZzG4iNwRHnk6fcJ3/ceDTradox7rOEH0x92HWcdL2pCmvKaRptTmvtbYlu6T8w+0dbq3nr8R9sfD5w0PFl5SvNUyWna6YLTk2fyz4ydlZ19fi753GDborZ752PO32oPb++6EHTh0kX/i+c7vDvOXPK4dPKy2+UTV7hXmq86X23qdOo8/pPTT8e7nLuarrlca7nuer21e2b36RueN87d9L158Rb/1tWeOT3dvfN6b/fF9/XfFt1+cif9zsu72Xcn7q28T7xf9EDtQdlD3YfVP1v+3Njv3H9qwHeg89HcR/cGhYPP/pH1jw9DBY+Zj8uGDYbrnjg+OTniP3L96fynQ89kzyaeF/6i/suuFxYvfvjV69fO0ZjRoZfyl5O/bXyl/erA6xmv28bCxh6+yXgzMV70VvvtwXfcdx3vo98PT+R8IH8o/2j5sfVT0Kf7kxmTk/8EA5jz/GMzLdsAAAAgY0hSTQAAeiUAAICDAAD5/wAAgOkAAHUwAADqYAAAOpgAABdvkl/FRgAAFi9JREFUeNrs3Xd4VkXaBvBfOi2GEmqUjiCCCAioqMAKIn6KgqCoa68o6IK9yyK7KGtZxYqsYkFRRETEXtfCrmKnKRZUBCJFKVJCMt8fOcQQEvK+ASSsPtf1XinvmTkzc5+Zecr9zEnw28ruKmsj095qaiRTY1VlqaCWFCkSJciVJ8d6ayyy3PeW+MoSX8n2kXU+xjd+55KwnetPlay7Zg6zhz9pbg/1UBEbsB6rsTb6PRfJSI2uqRT9noSVWIC5ZpjtFfO8gFf/AG3bSXvNnKqzY7WRqRpW4CvM86nvvW+Rz60y32qLBEvxCwISUVmSTJXVla6hOpqrr4NmdtcwAjMbM8z3jkd85wF88QdoZZPu9vMXh/g/u+NHvG+xDzzrKy9Y6118txX1N5XuAE311N5h2tlFOj7F88b7xK14zx8Sk+ytg2fcKJgguFLQ0dOS9Y4WvO0hlVVyoi5eM0LwuOBaQUvj0PAPSEqWZFlGuULwpOAyQQtjsddv3I4DtPek6wUTBYPkqurSP+ApbqAON8cEwa2Cdiaj9Q5uUzddvW2M4AFBZ//G7n9ABRUNdYXgacFxFkvUv1y1r7KBzpVjqmCgHBzz+wasvrHuEYwVtPIEqpXTljbV2VseE9wgyHDt7xOwPU3zhGCEIN3FO0Wb67nNHYJ/CbLc83vTD980WXChgH7boMYMVI6srpI+GdtsOR8pGC/Yzbjfh53W0ktG6u5FjNYNr2/FPavY24P21VWeZEFCZFQXbVmiFME3FnjBcTb4cCt7erJhHtAUQ91jkXP+d0HL8qB/OtHbuEVXvLFVd6ygr+s8qSYWb6EVeUhDFu7wX2/ptA16e5K/G6cmLnCNVYb/L2qJFxsruF5A722k2fV3i2CgXIkOk6SdJB03+yTYSyN3elBwqP9ssz6lGeJewcht2KdyJB1dFW3gFVwYZ9ksXTytq6dRf5NvKjnSTYKzbYhBiRhonODgYmZ3st76m6G1B+PuWW33eFJwqlzU/l8BLEEviz0jaOypOMvW1dcCzwqmCo62ELsV+n5/owTnyY0Wv5KlkSs9LOjkhU3+n+RwQwUvCx4VtDE17h7u6zPPCtpuw1m8Q6WOu00SHGWpfK977Ap2PwtMFRxhvn6yTRP0sxj10FIXrxonGCJg11IsrX8YLzhdtixDkSlBDxcJJgv+z2KD5JpUJuB2NUgwTlDBoJ3fGrtGcLOA7nHNsKMt8Lzgz5YgHbs5xwaTBMdb5YJosG8XtDNVfrSsZKmkm0GRX/M+wclWGRzV0V92ZNh3NkyIgHsmTqXoAg8KzhBQdeeFrL3/miJoGteTW9vRvvOC4M+Wo3Gh7zo4XY6nBXcI+pqjunNjrjlJD509ZZAN7o+iCH0sQoNC+1s/wwRPCdqYEld/DzTHZMFuHthZIevqZsFQIVrOYgOsr+88LzjRMjQr5prWWhsh02lb5UBr4BItXIc6m32bYoC/RjNuL0/HUW9nowSXCJspTTuFdPK+iYIsY2IsUctRvvWC4CQ/oekObX+KYwyPgGsdB3BtvWWioKGHdjbI2hohuEhA3RiWrcZ6m+9xwZ/NV1oIJNHWx8kTY1CLUh3nOnnGCdp6KnKHlSb7GSU4X0CNnQeyph4wQdDS5Jiu38O9ninQApvHNOC/BWj5cro7BLcIEnSJqcTBZnlIUK38B08TC/SogwzwPWa5NaaSS7xlFlpgH38rR33K0MVxMjAbwYKYSk13uxzs58ydY5al6Gu0oJ/suMrVcIWbI5W8k7fkE9/ilUzJDlHTubJcooYzJegWmQzxSjU9fW6a4C+CZD3iKFvdYMEwwY6PwMcgLY3zoKCR2+MuW8PlrrfBgwWUg1jlAPt43GC5/iG4U3BX9PMGwVlWa2kMWsZYX6puPjFBcL6f4rQxN3pJXvWAoKYryz9ox1rsZkGiQ8tUvpWpkcvqy5iub+Buf43iW8ME/XxpX0/a2/06m+J43xsZuaguFdRwXQy1NnSlYIwgqYxLXIbBxgi6bFXo6TfygFxd4AvcpUw19PWlRwTN3FTKlWn2854no8hBC/egXQnXdtHOJLcJHhY0M6mUuivq4xtPCNrHNeMLSxvDBGfaID9AW06lspPcKejpgxj3v8M0caFdXSDLORq63U2C6wSlUefaetdUwSlWxrx8JTnBxYInBLt5pJS+DDA6okM0cav6LtbQFXZ3rQqOikkxO8lKIwTsV35Ba2xURNIpnT9R1dEujJys/4r8gQ9GrqWu5paiIgw3XnCWNeKntR3smmi/SzFgi1f2sMAkwUNRGx+I2jtEUEnPUu/UzRvuFGQ4u7xClixTYznIjoEL30AvbfGSxX4wW4oUqdJkW+wdg7dQso4TXWUZ7tUfn8fZzleMcpn7jHSkMSaaSAnxuJccIsn9MlS13lo5Nmhkd61UVk1bvxQJ8xSVRWZKdpAaGvu5vIJWU0PrsSoGjv0GSwS841FfGBLzXeo4Tyf809uUIfYFa9zgCec7TD1TDbDWwyVcOdPzOhbRU5+1t8Pk+qnU+/zke3moVkrYaIca1xl2tRprChgbJUuQn46ULiWuu3R0rGV4v1RFZcvyptGS0TpO8mlFQW6M16610AZULcYpXW5AS1PNWgTL4iiXFMe1NTXRzDzkeXOrWrvMC35AsyIzaVu29xcrrEOl8uuDTJQsWU60AG0fqa86FluGpVtZ13eykam27cVszrNaHpLKr8qfKEFCxDoM2+keSZKQa+02GdINNiZPpW6n9uYvpAmUX9By5UWDsL3yyJZZjXSZxLkXbi7pMrDSWmJQKsoiCZH/NDdaf8olaDlWR0NZNY5y8czKbyywWiOp2HMrdd19ZOE7n2HddmlvqspSsd7y8gvaKotURqrMmLf0lVbFcY8NPvKihqjjpK10uJ0hA596Oa5yq62JeR2pqJZUrLCk/BrXy8xXUTOVZFlf6lOYLhdt9FVVbSkqqKii731vrsEF+0FR+cSdluqjj3Pd5RriAn2jtNRPT3OwwH1buC5TKyNkSLfeOjlyNbWvgKQYEjqqqCcRy2OMw5V9p8+f/3llAe1H30hBNQ1K3SWWWmA5+mkiaFKgDvyEEZJ95awS1IeXPepjV2rjNRPNKUM0oZtJWmOICWwhmtDZq87TWmIhn0kyZuAnn8ZgoDQCy3273QBLiEDLKetMyzYH1NXG16Uq3P9wm13UVz9yEOWoopWTdXK4M93makow0v+jnxd8YZieLjHWfKfH2MYUbU0zRHMPWOlrZ2xhMPbRS2sLMN4kwWKJUqRJMtMbVptW6t3q6eAXLDVru4K2lRUc7AbB8WW2oRKdYrnHCkItW5I+ropOIjjIG+hQyvWH6m2uKYKz5KJtKQvo3R4X9C7FeV2y1Da0gNy0/eh0idEKtRXgZRgoLwqt7BnTU5IcTe/Eghou85jgHEHp7KfeTrfak1EA9ADPyzREom5oL1l3dV2uu3eMigDu61u0L7YthTt+siUmCurGyHPZfN3p4zZBn1LXnB0KWjJ+Nstb2jtQVT38ZGZMCvSvKkc1+zpSMr71NaWqM1OM1cK7rnekk5yipw16+jkqWcGv+Z8z5Rntn+a7Sv6JPsUDFjaxCGs4wnHu9QxeiWs0GuqhKmZ7UbmX6i51v+AA78ZZspJe5nhO8Gcr5HOz4pHm6rjUASY72ucGyNbHTJ08rrrzxc5y3ghka8dZ5TnBIIEY6XMbpb9stwuS9SnPM22jNHGl4OI46OCJsvSIiDQn+w57lJNHsKVjzTNeMFBQ0b4xljvIPwRnWK9srLLfHDS6+MBDguquKnEvK7wk1XGNiYLL5KFVOVs7erkuOr0nK8ajKHY3PlKmxv8GLo1tBFoFp7hPcHSM3McKOhgchfI7mqT8uFgb6e9T4wV9LZAU2ZOlKWODBDcK2H/nAY0UJ1htjCDZcTHuIX9ykeBZQWdvlwPAGjrOEi8K+lkQ81Jf3d89JugWNw3iVxASdwxoVHWNRwWHxuUN6O5iwTOC/f27RC21gj+xlSH8NL1UKZFVVd8Aiz0v6G+h0lKDf5XKzpDjLkGyo8tkKKeJL0ayTUEjzYnWGCdIMzCOcj1cUgDcW5tpmN195FbB+XId6GkZcTqOqznNYWYYJbinQMstHOZpYIDsCLAfin046jpXd7MkFUkWqe0ukwTdYiTaFgfaxtNfdxBoVHKBhwQnWxOnFtXDpVFy/P6FaAUH+8RjUTrw6Cj19lbBXiYqLb6WYFddzTA6OjztMqHgmMJu3o+uqmiAbC8IjrW4xNnczVvuEaQ4vNB/m7kiao+4eP/lDDTo6itPCxqaGGfJni6N0mj38pR9vGhS5Pmo7gLVna6H6e6J6N6lJSHWNdRYwSjBQZ7HPhIc4vLoHh29oadPTRMca9EWXU89vOlqYRPXWScfe0awR5yhnnIJGvu4NpoZHBtn2UNcFDGCJ0T07wznbQLFVYLLBaWRVncz2DhBvyJ7bLI+LhNMi2bgsbJteuzF5tLXR9GD0hCkG2a84EwBNf8XQKOaG0wo8Cc2jLMjhxosxxWCXTYjsTZzbYEhn1nKTDvZWMGAYoi0Kfo4zhd6el/hpPmS5ARLolxyaG14lKWT7JStGqdyBRq0975pgu6+Fj+/o34JMyl/wIYWcP9T5Sc7FP0kqWaIsYITttqBm2Sg4ARzUc+JlpgsqO+xrR6jHQDalhXVGbq7zzeGaGiJ13zkgDjqLslsCHLkn4Fwjv9ItK7YByLPOhVkqIyUGHLAS1s3UvCDJO287jg1XOUp3xbkBWRK01We7+SU/xN8YsG6jYE+cigu97xZesVcc4LiwulpWhmnr2NVpETm78YDBVdiopt86aKt6Gdjp5qngQS74Gk/eMNgTTTUQj/N7ac1nsIUlcTDAU2IHrncLfSluJmWLD9yHbYPaPmK+1AvOwjXesnHDlUau6Fk0H5dfJMkyttCVxMly7UeH8XUk5IHoJNzTdcZi+Sf499UfjbeGvlv1vjCv31gosXuiGP4dwho8cihzhdMEXTzgdKOrUiI07WztWtFQimmyOWRPXau4BSLdPWcXV0uQVdlTaYsl4rI5nKAk602reB0nkO2u2M1qZTOxQbaLuoarqaLsbdtSczdCUCDpg72qScFwwV13OAPKXeKSPHPSmNjXeAUtfGw2aa6iBjYTvFIHYPU09gXXray2Lo7aqGnmhpb4QezvC7HS5v1LsjUyF9UiWjwhfufY731Vljuayu8RgyphIVpDpV00dyRfjDHYvfG1K8ajtdAB597wSrP/7aQJzneiZZ4IopFtfcUMUeKS5f+VnlW0Nqjxcz3+4yMTjO4OTrh7raCkwkyC5ahhMg2HBq9S+C+6Oe/op9joxTf0YKzLZflrzEtb4kFroKbPSU4Kg5y6xHmek/QrtTk/zLYaaVJrvEe8px3XG+Ac13mKJ85yrOe8oF75W3lU5TjS6vsJdeiTf7fyJ2ud7ovMcrffO8Nu2ist7+5UBcJ3vC61vIKZtX6AvNhgjesMU+ClIh1nCRdNbvr4k+q6uhqN2ph7hYSF/MKgZZniVXIieNlfN9430RN/bgduZUxyt7aety1gscENwmONFOWYdinTDX29rFHBHu4pZD7qoNbo0T4VKcWKdHIxX5xl2CXTQK5zV0YOZ5LjkzX0Moj/hW5t2o4v9TZlm8BXuEBQS/Tf6uB3pZK+Uc+dIxh9jHMveZZ63AtjXCNYd5ztHlauV81Z0UDV7YDn1M1Nl+Ohyyx3v1Fvv3adB+ohV11LuKHyV8q09XabATyl9ClPnOC+0yXhUOMlE/o2yhV5HNhWqFKwRxOKLARN2bStlTPqWo7ScmnDaVH/S+JI7qHTMfLcpZ0hymS0bQ9ctJmmO1ss10pQx+tHKmdXg7SxGGaWOcUy+S/afBH8y23xCpLrbdasMYc46zcAu9wtQlu8XKRAf1VdtXAOiwvMfF/yw/qO4b60Dvaq2iKXlZHB2+nOti5JkvFaH38UuiAmYClKmjgZgMNUSW6y4+Y7AkfOlX+izQ3uhUe0c8R7nWrrzc5cKCB/Y3Wy+GqFnrQPrfKBDfIdv32Am2jLPGzMd42xtsypTnAbvbTQCe7aq2u6lppoJIGkuSH7NNwo93MKpUsurRYU6SDUY6yqylWW7jZLIxVppttqSPUkOVAn0egJUrXxEZqQfpmremqm0zdfGK2901QRV2HO9sw/d2gqbcLnUxUXao2qLLJ+NdzjI+cqKrXMdndVlmovgMdrbtRhhumia+cmvwbLcNLrDPZPJPNi3am/ChAA5XUkSpdRZXkyrUkzsOj6xjoSNeopY4meMhCU7VFdimurV+ViqIO7Z/Nk6KGjEIxunXeNNx5ErCq0HsCQvRpgTtNNKPQa8lmGO8qrztDW7OdY5m7o7rWWIqcQomR7dzvJFVNsNBDDrQxM2gu/muQEW43yCmuNCnRjpGcqFGv+sV4P7nHQrfIdpu8OMMwNRypljpWyPE9GqmhifMpyCUvi1a8TgIqFJoJwbey3WmxO+X5dhMLtzre9HMBYL/uk2961BgZ6FhCGli+1HewQ8zHIwbjy004pj8b7UEvaYZ9DN1RoG07melsw+3in6q72RlqS3WjK+xpQpldCEkqCFi3BRdwYfdZEj4vxETLKzTDF5jmWzSyp5I4N+k6aoBPrCvRTPrSRIvRUNudHzTmRxbYKsuM9TeDLENv/SVE2lt8My5RhiZysKIEgzmhyF8bsM73xV67wWKrkC61GI05v2WV1JKGny0pUFhCkXavtcTPSFd5ZwWtgpIi6b94xAz5nKx0bcpQd3vN1LAYC2Ik4OYvZWklfJcm2cZcopUl7KvrI0M/rcR1IUmqlPzZv/OBtpth/mK+5iWejZVSKL61Pu7693SFdvhYrpWeLfaaUOSvZFQp9n0EVNZCbWRbWIzWmxDtWV9ZgboylRTyytBcLSy3cOcDLUklh6nlCMco7tSezOjwtM+x2jubGMD5z3rJB7fVdLHTHGUFXjJiE9uqJODy9z7a66Q4VnNH56iOT7aQK7feuz6VoyPqlhCh39dp0jDHK+UftITN/HbDjbVWNxzi5UJehypqGuIi10rEFDdh4SbKQQKaOEct56jjAnWcL8v5WrrR4T423I0a4E7T/VAk2yZZZ91M1910qQ7YZLYtRQspBnhPfrwu/xFo7UFn2Ntr+KzIC/Y27dcaz7nSalxkiDou9WtgtqWDvOYE9b2IWf6eXK4BS9dQPaRt4npa4QndVfWKs7TT2UxfWSxDbW2jvWO4J3zrogI7LUhVMVp4LnWa4LSCQdto2Idodo72iM+cXMyiu4dzdVIB79vD+oj+nqaGJhhnvd3VdaMPzfWj6mrqIJ8ocbfjFT7jspKszfqVbZQRWhnqJDcY6SMj/exHDdS0B16xwRh98WVSuQZtjTq+sMZMU6wp9E7Q4DszPOpzadI1VFstuXjb6+51jR9cXeRpTrFKU7N94RNzzDTXZ+b6zBc+MctbpnvGeFNcLNtdxeqbQZIFdvOuL33tMbmRZrlBhuUyveQqbxmpmg7qaWKdPFNM9LDTbChyMOg6mb6WaJbJ1hTivywz2avmWmUXVTWRrrKFfvCYcZ5xorx8p/T/DwD2uUyGUolWEQAAAABJRU5ErkJggg=='
+	$logoBytes = [Convert]::FromBase64String($logoBase64)
+	# initialize a Memory stream holding the logo
+	$logostream = [System.IO.MemoryStream]::new($logoBytes, 0, $logoBytes.Length)
+	$imgi3d = [System.Drawing.Icon]::FromHandle(([System.Drawing.Bitmap]::new($logostream).GetHIcon()))
+
+
 	# adding the icon to the main GUI
 	$objForm.Icon = [System.Drawing.Icon]::FromHandle(([System.Drawing.Bitmap]::new($iconstream).GetHIcon()))
 

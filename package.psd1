@@ -6,11 +6,11 @@
         Obfuscate = $false
         HideConsoleWindow = $true
         DotNetVersion = 'net4.8.1'
-        FileVersion = '1.6.2.1'
+        FileVersion = '1.6.3.0'
         HighDPISupport = $true
         FileDescription = 'Network Share Mounter'
         ProductName = 'Network Share Mounter'
-        ProductVersion = '1.6.2.1'
+        ProductVersion = '1.6.3.0'
         Copyright = 'Tobias Wernet - Albert-Ludwigs-Universität Freiburg'
         RequireElevation = $false
         ApplicationIconPath = 'C:\temp\Logos\folder.ico'
