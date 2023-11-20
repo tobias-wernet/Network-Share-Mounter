@@ -1,0 +1,16 @@
+{
+  "groupshares": [
+    {
+      "Index": "0",
+      "Group": "UFR: Example Share 1",
+      "Path": "\\\\example.institute.privat\\share",
+      "Domain": "example.institute.privat"
+    },
+    {
+      "Index": "1",
+      "Group": "UFR: Example Share 2",
+      "Path": "\\\\example.department.institute.privat\\share",
+      "Domain": "example.department.institute.privat"
+    }
+  ]
+}
