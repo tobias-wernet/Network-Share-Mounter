@@ -3,8 +3,8 @@
 # Life Imaging Center, Albert-Ludwigs-Universität Freiburg		#
 #																#
 # Tobias Wernet													#
-# 20.11.2023													#
-# v 1.6.3										 				#		
+# 21.11.2023													#
+# v 1.6.3.1										 				#		
 #																#
 # Changelog:													#
 #	- Rename													#
@@ -48,8 +48,8 @@ Add-Type -AssemblyName System.Windows.Forms
 [void] [System.Windows.Forms.Application]::EnableVisualStyles() 
 
 # Various Variables
-$version = "1.6.3"
-$lastdate = "20.11.2023"
+$version = "1.6.3.1"
+$lastdate = "21.11.2023"
 $tool = "Network Share Mounter"
 $user = 'xUIDx'
 
@@ -492,7 +492,7 @@ function global:About
 			
             #This creates the picture box for the i3d:bio logo
 			$objpictureBoxi3d = New-Object Windows.Forms.PictureBox
-			$objpictureBoxi3d.Location = New-Object System.Drawing.Size(360,370)
+			$objpictureBoxi3d.Location = New-Object System.Drawing.Size(360,365)
 			$objpictureBoxi3d.Size = New-Object System.Drawing.Size(109,80)
 			$objpictureBoxi3d.Autosize = $false
 			$objpictureBoxi3d.Image = $imgi3d
@@ -514,10 +514,10 @@ function global:About
 
 			#This creates a label for the DFG funding text
 			$aboutformLabelFunding = New-Object System.Windows.Forms.Label
-			$aboutformLabelFunding.Location = New-Object System.Drawing.Size(10,370) 
+			$aboutformLabelFunding.Location = New-Object System.Drawing.Size(10,375) 
 			$aboutformLabelFunding.Size = New-Object System.Drawing.Size(350,120) 
 			$aboutformLabelFunding.Font = New-Object System.Drawing.Font("Arial",7)
-			$aboutformLabelFunding.Text = "Gefördert durch die Deutsche Forschungsgemeinschaft,DFG, `r`nim Rahmen des Projekts Information Infrastructure`r`nfor BioImage Data (I3D:bio) - 462231789"
+			$aboutformLabelFunding.Text = "Gefördert durch die Deutsche Forschungsgemeinschaft, DFG, im Rahmen`r`ndes Projekts Information Infrastructure for`r`nBioImage Data (I3D:bio) - 462231789"
 			$aboutform.Controls.Add($aboutformLabelFunding) 
 
 			SetDoubleBuffered $aboutform
