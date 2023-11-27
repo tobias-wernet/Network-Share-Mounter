@@ -5,12 +5,12 @@
         Enabled = $true
         Obfuscate = $false
         HideConsoleWindow = $true
-        DotNetVersion = 'net4.8.1'
-        FileVersion = '1.6.3.1'
+        DotNetVersion = 'v4.6.2'
+        FileVersion = '1.6.3.2'
         HighDPISupport = $true
         FileDescription = 'Network Share Mounter'
         ProductName = 'Network Share Mounter'
-        ProductVersion = '1.6.3.1'
+        ProductVersion = '1.6.3.2'
         Copyright = 'Tobias Wernet - Albert-Ludwigs-Universität Freiburg'
         RequireElevation = $false
         ApplicationIconPath = 'C:\temp\Logos\folder.ico'
@@ -19,9 +19,9 @@
         RuntimeIdentifier = 'win-x64'
         Platform = 'x64'
         PowerShellArguments = ''
-        DotNetSdk = '7.0'
-        Host = 'Default'
-        #Host = 'IronmanPowerShellWinFormsHost'
+        DotNetSdk = '7'
+        #Host = 'Default'
+        Host = 'IronmanPowerShellWinFormsHost'
     }
     Bundle = @{
         Enabled = $true
